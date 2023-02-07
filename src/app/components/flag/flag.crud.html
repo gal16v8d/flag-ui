@@ -1,0 +1,49 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <h2 class="p-m-0">Manage Flags</h2>
+
+    <p-table #dt [value]="flags" [rows]="10" [rowsPerPageOptions]="[10,20,50]" [paginator]="true" dataKey="_id">
+        <ng-template pTemplate="caption">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="app">App <p-sortIcon field="app"></p-sortIcon></th>
+                <th pSortableColumn="value">Value <p-sortIcon field="value"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-flag>
+            <tr>
+                <td>{{flag.name}}</td>
+                <td>{{flag?.appId?.name}}</td>
+                <td>{{flag.value}}</td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" (click)="editFlag(flag)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteFlag(flag)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{width: '450px'}" header="Flag Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="p-field">
+            <label for="name">Name</label>
+            <input type="text" pInputText id="name" [(ngModel)]="flag.name" required autofocus />
+            <small class="p-invalid" *ngIf="submitted && !flag.name">Name is required.</small>
+        </div>
+    </ng-template>
+    
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveFlag()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
